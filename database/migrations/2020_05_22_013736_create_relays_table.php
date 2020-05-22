@@ -21,7 +21,7 @@ class CreateRelaysTable extends Migration
             $table->smallInteger('number');
             $table->timestamps();
 
-            $table->foreign('device_id')->references('id')->on('device')
+            $table->foreign('device_id')->references('id')->on('devices')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }
