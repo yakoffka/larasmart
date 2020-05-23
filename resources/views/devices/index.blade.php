@@ -19,7 +19,30 @@
                     </div>
                 </div>--}}
 
-                <h1 class="text-center grey">index</h1>
+                <h1 class="text-center grey">Available devices</h1>
+
+                <table class="table table-striped table-hover text-center">
+                    <tr>
+                        <th>num</th>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>hid</th>
+                        <th>relays</th>
+                        <th>status</th>
+                        <th>actions</th>
+                    </tr>
+                    @forelse($devices as $key => $device)
+                        @include('devices.parts.row_device')
+                    @empty
+                        <tr><td colspan="7">no saved devices</td></tr>
+                    @endforelse
+                    @foreach($onlineDevices as $key => $device)
+                        @include('devices.parts.row_device')
+                    @endforeach
+                    @if(!$devices->count() && !$onlineDevices->count())
+                        <tr><td colspan="6">no devices</td></tr>
+                    @endif
+                </table>
 
             </div>
         </div>

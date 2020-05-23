@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property int $number
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|Relay newModelQuery()
  * @method static Builder|Relay newQuery()
  * @method static Builder|Relay query()

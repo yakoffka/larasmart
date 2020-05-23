@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\DeviceService\DeviceServiceAbstract;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,9 +12,12 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        //
+        $this->app->singleton(
+            DeviceServiceAbstract::class,
+            'App\Services\DeviceService\\' . config('custom.device.type') . 'DeviceService'
+        );
     }
 
     /**
@@ -21,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         //
     }

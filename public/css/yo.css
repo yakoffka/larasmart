@@ -5,3 +5,21 @@ a {
 .grey {
     color: #636b6f;
 }
+.blue {
+    color: #1d73ff;
+}
+
+.online, .offline {
+    height: 8px;
+    width: 8px;
+    margin: calc(1em - 4px) auto;
+    border-radius: 4px;
+    border: 1px solid #0d63f3;
+    background-color: #1d73ff;
+    box-shadow: 0 0 5px #538ff3;
+}
+.offline {
+    border: 1px solid #f9f9fa;
+    background-color: #b6b8b8;
+    box-shadow: 0 0 5px #939495;
+}

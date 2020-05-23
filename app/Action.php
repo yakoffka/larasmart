@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property mixed $delays
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|Action newModelQuery()
  * @method static Builder|Action newQuery()
  * @method static Builder|Action query()

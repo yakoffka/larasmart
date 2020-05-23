@@ -3,17 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Device;
+use App\Services\DeviceService\DeviceServiceAbstract;
 use Illuminate\Http\Request;
 
+
+/**
+ * Class DeviceController
+ * @package App\Http\Controllers
+ */
 class DeviceController extends Controller
 {
+    private DeviceServiceAbstract $deviceService;
+
+    /**
+     * DeviceController constructor.
+     * @param DeviceServiceAbstract $deviceService
+     */
+    public function __construct(DeviceServiceAbstract $deviceService)
+    {
+        $this->deviceService = $deviceService;
+    }
+
     /**
      * Display a listing of the resource.
      *
      */
     public function index()
     {
-        return view('devices.index');
+        $devices = Device::all();
+        $onlineDevices = $this->deviceService->getOnlineDevices();
+
+        $devices->each(static function (Device $item) use ($onlineDevices) {
+            if($onlineDevices->contains('hid', $item->hid)) {
+                $item->online_status = true;
+                $onlineDevices->pull(Device::whereHid($item->hid));
+            }
+        });
+
+        return view('devices.index', compact('devices', 'onlineDevices'));
     }
 
     /**

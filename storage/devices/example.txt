@@ -1,0 +1,30 @@
+# логика приложения реализована из предположения, что
+# вывод команды "usbrelay" для более, чем одного устройства будет следующим:
+Device Found
+  type: 16c0 05df
+  path: /dev/hidraw2
+  serial_number:
+  Manufacturer: www.dcttech.com
+  Product:      USBRelay2
+  Release:      100
+  Interface:    0
+  Number of Relays = 2
+EX001_1=0
+EX001_2=0
+Device Found
+  type: 16c0 05df
+  path: /dev/hidraw2
+  serial_number:
+  Manufacturer: www.dcttech.com
+  Product:      USBRelay8
+  Release:      100
+  Interface:    0
+  Number of Relays = 8
+EX002_1=0
+EX002_2=0
+EX002_3=0
+EX002_4=0
+EX002_5=0
+EX002_6=0
+EX002_7=0
+EX002_8=0

@@ -21,6 +21,7 @@ use Illuminate\Support\Carbon;
  * @property int $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|Commutation newModelQuery()
  * @method static Builder|Commutation newQuery()
  * @method static Builder|Commutation query()

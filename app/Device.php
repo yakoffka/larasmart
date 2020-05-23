@@ -14,11 +14,11 @@ use Illuminate\Support\Carbon;
  * @property string $name
  * @property string $description
  * @property string $hid
- * @package App
  * @property int $number_relay
  * @property int $online_status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|Device newModelQuery()
  * @method static Builder|Device newQuery()
  * @method static Builder|Device query()
@@ -31,6 +31,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Device whereOnlineStatus($value)
  * @method static Builder|Device whereUpdatedAt($value)
  * @mixin Eloquent
+ * @package App
  */
 class Device extends Model
 {
