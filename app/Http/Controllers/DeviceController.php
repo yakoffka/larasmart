@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Device;
+use App\Http\Requests\StoreDeviceRequest;
 use App\Services\DeviceService\DeviceServiceAbstract;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
 
@@ -33,10 +35,10 @@ class DeviceController extends Controller
         $devices = Device::all();
         $onlineDevices = $this->deviceService->getOnlineDevices();
 
-        $devices->each(static function (Device $item) use ($onlineDevices) {
+        $devices->each(static function (Device $item) use (&$onlineDevices) {
             if($onlineDevices->contains('hid', $item->hid)) {
                 $item->online_status = true;
-                $onlineDevices->pull(Device::whereHid($item->hid));
+                $onlineDevices = $onlineDevices->filter(fn($device) => $device->hid !== $item->hid);
             }
         });
 
@@ -44,24 +46,13 @@ class DeviceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreDeviceRequest $request
      */
-    public function store(Request $request)
+    public function store(StoreDeviceRequest $request): void
     {
-        //
+        Device::create($request->validated());
+        redirect()->route('devices.index');
     }
 
     /**

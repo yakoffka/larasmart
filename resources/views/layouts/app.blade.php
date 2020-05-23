@@ -15,7 +15,8 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/yo.css') }}" rel="stylesheet">
@@ -29,6 +30,7 @@
             letter-spacing: .1rem;
             text-decoration: none;
         }
+
         .links > a:hover {
             text-decoration: none;
         }
@@ -36,7 +38,7 @@
     </style>
 </head>
 <body>
-<div id="app">
+<div id="no_app">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
@@ -92,7 +94,11 @@
     </nav>
 
     <main class="py-4">
+
+        @include('components.toasts')
+
         @yield('content')
+
     </main>
 
 
@@ -113,7 +119,14 @@
         </div>
     @endauth
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
+    <!--Инициализация всплывающих сообщений через JavaScript-->
+    <script>
+        $('.toast').toast('show');
+    </script>
 </div>
 </body>
 </html>

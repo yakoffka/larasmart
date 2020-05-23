@@ -35,5 +35,10 @@ use Illuminate\Support\Carbon;
  */
 class Device extends Model
 {
-    //
+    protected $fillable = [
+        'name',
+        'hid',
+        'number_relay',
+        'description',
+    ];
 }

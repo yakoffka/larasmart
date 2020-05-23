@@ -20,4 +20,8 @@ Route::get('/', function () {
 Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/devices', 'DeviceController@index')->name('devices.index')->middleware(['auth']);
+
+//Route::get('/devices', 'DeviceController@index')->name('devices.index')->middleware(['auth']);
+//Route::post('/devices', 'DeviceController@store')->name('devices.store')->middleware(['auth']);
+
+Route::resource('/devices', 'DeviceController')->except(['edit', 'create'])->middleware(['auth']);
