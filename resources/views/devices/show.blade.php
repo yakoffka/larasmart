@@ -8,21 +8,21 @@
                 <h1 class="text-center blue">{{ $device->hid }} devices</h1>
 
                 @if($device->relays->count() > 0)
-                    <ul>
+                    <table class="table text-center">
                         <tr>
                             <th>num</th>
                             <th>id</th>
                             <th>name</th>
                             <th>device hid</th>
                             <th>description</th>
-                            <th>last status</th>
+                            <th>expected status</th>
                             <th>actions</th>
                         </tr>
 
-                        @foreach($device->relays as $relay)
-                            <li>{{ $relay->name }}</li>
+                        @foreach($device->relays as $key => $relay)
+                            @include('relays.parts.row_relay')
                         @endforeach
-                    </ul>
+                    </table>
                 @else
                     this device does not have a relay
                 @endif

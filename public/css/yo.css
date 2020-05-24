@@ -5,6 +5,7 @@ a {
 a .blue {
     color: #1d68a7;
 }
+
 a .blue:hover {
     color: #3490dc;
 }
@@ -12,6 +13,7 @@ a .blue:hover {
 .grey {
     color: #636b6f;
 }
+
 .blue {
     color: #1d68a7;
 }
@@ -19,7 +21,6 @@ a .blue:hover {
 h1.blue, h2.blue, h3.blue, h4.blue, h5.blue, h6.blue {
     color: #1d68a7;
 }
-
 
 
 .links {
@@ -40,7 +41,6 @@ h1.blue, h2.blue, h3.blue, h4.blue, h5.blue, h6.blue {
 }
 
 
-
 .online, .offline {
     height: 8px;
     width: 8px;
@@ -51,12 +51,12 @@ h1.blue, h2.blue, h3.blue, h4.blue, h5.blue, h6.blue {
     background-color: #1d68a7;
     box-shadow: 0 0 5px #538ff3;
 }
+
 .offline {
     border: 1px solid #f9f9fa;
     background-color: #b6b8b8;
     box-shadow: 0 0 5px #939495;
 }
-
 
 
 .toasts {
@@ -83,3 +83,79 @@ code pre {
 table.table.no_border_top th {
     border-top: none;
 }
+
+
+
+
+/* switch */
+.switch label {
+    cursor: pointer
+}
+
+.switch label input[type="checkbox"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.switch label input[type="checkbox"]:checked + .lever {
+    background-color: #cfd8e2
+}
+
+.switch label input[type="checkbox"]:checked + .lever:after {
+    left: 1.5rem;
+    background-color: #1d68a7
+}
+
+.switch label input[type="checkbox"]:checked:not(:disabled) ~ .lever:active:after {
+    -webkit-box-shadow: 0 0.0625rem 0.1875rem 0.0625rem rgba(0, 0, 0, 0.4), 0 0 0 0.9375rem rgba(170, 102, 204, 0.1);
+    box-shadow: 0 0.0625rem 0.1875rem 0.0625rem rgba(0, 0, 0, 0.4), 0 0 0 0.9375rem rgba(170, 102, 204, 0.1)
+}
+
+.switch label input[type="checkbox"]:not(:disabled) ~ .lever:active:after {
+    -webkit-box-shadow: 0 0.0625rem 0.1875rem 0.0625rem rgba(0, 0, 0, 0.4), 0 0 0 0.9375rem rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0.0625rem 0.1875rem 0.0625rem rgba(0, 0, 0, 0.4), 0 0 0 0.9375rem rgba(0, 0, 0, 0.08)
+}
+
+.switch label input[type="checkbox"]:disabled + .lever {
+    cursor: default
+}
+
+.switch label input[type="checkbox"]:disabled + .lever:after, .switch label input[type="checkbox"]:disabled:checked + .lever:after {
+    background-color: #bdbdbd
+}
+
+.switch label .lever {
+    position: relative;
+    display: inline-block;
+    margin: 0 1rem;
+    margin-right: .625rem;
+    vertical-align: middle;
+    content: "";
+    background-color: #818181;
+    border-radius: .9375rem;
+    width: 2.5rem;
+    height: .9375rem;
+    -webkit-transition: background 0.3s ease;
+    transition: background 0.3s ease
+}
+
+.switch label .lever:after {
+    position: absolute;
+    top: -.1875rem;
+    left: -.3125rem;
+    display: inline-block;
+    content: "";
+    background-color: #f1f1f1;
+    border-radius: 1.3125rem;
+    -webkit-box-shadow: 0 0.0625rem 0.1875rem 0.0625rem rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0.0625rem 0.1875rem 0.0625rem rgba(0, 0, 0, 0.4);
+    width: 1.3125rem;
+    height: 1.3125rem;
+    -webkit-transition: left 0.3s ease, background 0.3s ease, -webkit-box-shadow 1s ease;
+    transition: left 0.3s ease, background 0.3s ease, -webkit-box-shadow 1s ease;
+    transition: left 0.3s ease, background 0.3s ease, box-shadow 1s ease;
+    transition: left 0.3s ease, background 0.3s ease, box-shadow 1s ease, -webkit-box-shadow 1s ease
+}
+/* /switch */

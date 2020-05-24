@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $description
  * @property int $device_id
  * @property int $number
+ * @property boolean $expected_status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *

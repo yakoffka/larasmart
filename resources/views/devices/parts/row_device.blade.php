@@ -10,7 +10,7 @@
             : '<div class="offline" title="offline"></div>'
         !!}</td>
     <td>
-        @include('devices.parts.action')
+        @include('devices.parts.actions')
     </td>
 </tr>
 

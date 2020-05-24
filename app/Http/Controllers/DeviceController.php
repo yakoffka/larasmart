@@ -57,8 +57,6 @@ class DeviceController extends Controller
     {
         if(Device::whereHid($request->validated()['hid'])->first()) {
             session()->flash('warning', array_merge(session('warning') ?? [], ['this device already exists in the system']));
-            session()->flash('warning', array_merge(session('warning') ?? [], ['second message']));
-            session()->flash('warning', array_merge(session('warning') ?? [], ['third message']));
         } else {
             $device = Device::create($request->validated());
             $this->createDeviceRelays($device);
@@ -127,12 +125,14 @@ class DeviceController extends Controller
      */
     protected function createDeviceRelays($device): void
     {
+        $statusesRelays = $this->deviceService->getStatusesRelaysByHid($device->hid);
         for ($i = 1; $i <= $device->number_relay; $i++) {
             Relay::create([
                 'name' => $device->hid . '_' . $i,
                 'description' => 'description relay #' . $i,
                 'device_id' => $device->id,
                 'number' => $i,
+                'expected_status' => $statusesRelays[$i],
             ]);
         }
     }

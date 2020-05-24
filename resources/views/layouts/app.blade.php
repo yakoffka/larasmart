@@ -113,5 +113,12 @@
         $('.toast').toast('show');
     </script>
 </div>
+
+<style id="stylus-1" type="text/css" class="stylus">.advert-column.advert-column_css-scroll,
+    .advert-column.advert-column_native-scroll {
+        display: none
+    }
+</style>
+
 </body>
 </html>

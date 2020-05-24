@@ -19,22 +19,9 @@ abstract class DeviceServiceAbstract
      */
     public function getOnlineDevices(): Collection
     {
-        $statusDevices = $this->getStatusDevices();
-        $strings = $this->getRelayStrings($statusDevices);
-        $devicesArray = $this->getDevicesArray($strings);
+        $allRelaysReport = $this->getAllRelaysReport();
+        $devicesArray = $this->getDevicesArray($allRelaysReport);
         return $this->getNewDevices($devicesArray);
-    }
-
-    /**
-     * @param string $statusDevices
-     * @return false|string[]
-     */
-    protected function getRelayStrings(string $statusDevices)
-    {
-        $pattern = '~^[A-Z\d]{5}_\d=[0|1]$~';
-        $strings = explode(PHP_EOL, $statusDevices);
-        $strings = array_filter($strings, fn(string $string) => preg_match($pattern, $string));
-        return $strings;
     }
 
     /**
@@ -66,5 +53,38 @@ abstract class DeviceServiceAbstract
             $devices->push($device);
         }
         return $devices;
+    }
+
+    /**
+     * Gets an array of states of all device relays with the transmitted identifier: num => status
+     * $statusesRelaysByHid = [
+     *      1 = "0",
+     *      2 = "1",
+     *  ];
+     *
+     * @param string $hid
+     * @return array
+     */
+    public function getStatusesRelaysByHid(string $hid): array
+    {
+        $allRelaysReport = $this->getAllRelaysReport();
+        $pattern = '~^' . $hid . '_\d=[0|1]$~';
+        $hidRelaysReport = array_filter($allRelaysReport, fn(string $string) => preg_match($pattern, $string));
+        foreach ($hidRelaysReport as $relayReport) {
+            $statusesRelaysByHid[$relayReport[6]] = $relayReport[8];
+        }
+        return $statusesRelaysByHid ?? [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllRelaysReport(): array
+    {
+        $statusDevices = $this->getStatusDevices();
+        $strings = explode(PHP_EOL, $statusDevices);
+        $pattern = '~^[A-Z\d]{5}_\d=[0|1]$~';
+        $strings = array_filter($strings, fn(string $string) => preg_match($pattern, $string));
+        return $strings;
     }
 }

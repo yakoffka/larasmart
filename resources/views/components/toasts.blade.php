@@ -26,7 +26,7 @@
         @foreach (session('warning') as $key => $message)
             @php
                 $n = count(session('warning')) - $key + 1;
-                $color = 'a60d10';
+                $color = 'ff8800';
             @endphp
 
             @include('components.toast')
@@ -36,8 +36,8 @@
     @if (session('success'))
         @foreach (session('success') as $key => $message)
             @php
-                $n = count(session('warning')) - $key + 1;
-                $color = 'a60d10';
+                $n = count(session('success')) - $key + 1;
+                $color = '1d68a7';
             @endphp
 
             @include('components.toast')
