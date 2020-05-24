@@ -5,6 +5,7 @@ namespace App;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -16,11 +17,12 @@ use Illuminate\Support\Carbon;
  * @property string $comment
  * @property string $type
  * @property string $start_at
- * @property int $creator_id
- * @property int|null $editor_id
  * @property int $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
+ * @property-read BelongsTo $relay
+ * @property-read BelongsTo $action
  *
  * @method static Builder|Commutation newModelQuery()
  * @method static Builder|Commutation newQuery()
@@ -40,5 +42,19 @@ use Illuminate\Support\Carbon;
  */
 class Commutation extends Model
 {
-    //
+    /**
+     * @return BelongsTo
+     */
+    public function relay(): BelongsTo
+    {
+        return $this->belongsTo(Relay::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function action(): BelongsTo
+    {
+        return $this->belongsTo(Action::class);
+    }
 }

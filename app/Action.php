@@ -5,6 +5,8 @@ namespace App;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -13,8 +15,14 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $type
  * @property mixed $delays
+ * @property int $creator_id
+ * @property int|null $editor_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
+ * @property-read HasMany $commutations
+ * @property-read BelongsTo $creator
+ * @property-read BelongsTo $editor
  *
  * @method static Builder|Action newModelQuery()
  * @method static Builder|Action newQuery()
@@ -28,5 +36,27 @@ use Illuminate\Support\Carbon;
  */
 class Action extends Model
 {
-    //
+    /**
+     * @return HasMany
+     */
+    public function commutations(): HasMany
+    {
+        return $this->hasMany(Commutation::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function editor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'editor_id');
+    }
 }

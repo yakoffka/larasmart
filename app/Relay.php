@@ -5,6 +5,7 @@ namespace App;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -17,6 +18,8 @@ use Illuminate\Support\Carbon;
  * @property int $number
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
+ * @property-read BelongsTo $device
  *
  * @method static Builder|Relay newModelQuery()
  * @method static Builder|Relay newQuery()
@@ -38,4 +41,12 @@ class Relay extends Model
         'device_id',
         'number',
     ];
+
+    /**
+     * @return BelongsTo
+     */
+    public function device(): BelongsTo
+    {
+        return $this->belongsTo(Device::class);
+    }
 }

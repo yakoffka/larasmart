@@ -5,6 +5,7 @@ namespace App;
 use Eloquent;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -22,6 +23,9 @@ use Illuminate\Support\Carbon;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
+ * @property-read HasMany|null $createdActions
+ * @property-read HasMany|null $editedActions
  *
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
@@ -68,4 +72,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @return HasMany
+     */
+    public function createdActions(): HasMany
+    {
+        return $this->hasMany(Action::class, 'creator_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function editedActions(): HasMany
+    {
+        return $this->hasMany(Action::class, 'editor_id');
+    }
 }

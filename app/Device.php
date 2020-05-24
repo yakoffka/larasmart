@@ -5,6 +5,8 @@ namespace App;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -18,6 +20,8 @@ use Illuminate\Support\Carbon;
  * @property int $online_status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
+ * @property-read hasMany $relays
  *
  * @method static Builder|Device newModelQuery()
  * @method static Builder|Device newQuery()
@@ -41,4 +45,14 @@ class Device extends Model
         'number_relay',
         'description',
     ];
+
+    /**
+     * Get the relay of this device
+     *
+     * @return HasMany
+     */
+    public function relays(): hasMany
+    {
+        return $this->hasMany(Relay::class);
+    }
 }
