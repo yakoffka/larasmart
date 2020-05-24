@@ -20,22 +20,6 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/yo.css') }}" rel="stylesheet">
-    <style>
-
-        .links > a {
-            color: #636b6f;
-            padding: 0 25px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: .1rem;
-            text-decoration: none;
-        }
-
-        .links > a:hover {
-            text-decoration: none;
-        }
-
-    </style>
 </head>
 <body>
 <div id="no_app">
@@ -110,6 +94,7 @@
                         <div class="links">
                             <a href="{{ route('devices.index') }}">Devices</a>
                             <a href="#">History</a>
+                            <a href="{{ route('devices.report') }}">Report</a>
                             <a href="#">Logs</a>
                             <a href="https://github.com/yakoffka/larasmart" target="_blank">GitHub</a>
                         </div>

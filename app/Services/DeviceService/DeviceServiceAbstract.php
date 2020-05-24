@@ -9,8 +9,14 @@ use Illuminate\Support\Collection;
 
 abstract class DeviceServiceAbstract
 {
-    abstract protected function getStatusDevices(): string;
+    /**
+     * @return string
+     */
+    abstract public function getStatusDevices(): string;
 
+    /**
+     * @return Collection
+     */
     public function getOnlineDevices(): Collection
     {
         $statusDevices = $this->getStatusDevices();

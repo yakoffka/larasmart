@@ -1,3 +1,5 @@
 @if(!$device->id)
-    @include('devices.parts.add_device')
+    @include('devices.modals.add_device')
+@else
+    <a href="{{ route('devices.show', $device) }}"><i class="fas fa-eye"></i></a>
 @endif

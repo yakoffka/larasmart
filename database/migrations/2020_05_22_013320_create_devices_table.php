@@ -17,7 +17,7 @@ class CreateDevicesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('hid', 10);
+            $table->string('hid', 10); // add unique
             $table->smallInteger('number_relay');
             $table->boolean('online_status');
             $table->timestamps();

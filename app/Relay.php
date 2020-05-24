@@ -32,5 +32,10 @@ use Illuminate\Support\Carbon;
  */
 class Relay extends Model
 {
-    //
+    protected $fillable = [
+        'name',
+        'description',
+        'device_id',
+        'number',
+    ];
 }

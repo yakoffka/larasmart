@@ -7,7 +7,7 @@
 
                 <h1 class="text-center blue">Available devices</h1>
 
-                <table class="table table-striped table-hover text-center">
+                <table class="table no_border_top text-center">
                     <tr>
                         <th>num</th>
                         <th>id</th>

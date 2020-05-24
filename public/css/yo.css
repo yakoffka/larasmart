@@ -20,6 +20,27 @@ h1.blue, h2.blue, h3.blue, h4.blue, h5.blue, h6.blue {
     color: #1d68a7;
 }
 
+
+
+.links {
+    padding-bottom: 2em;
+}
+
+.links > a {
+    color: #636b6f;
+    padding: 0 25px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .1rem;
+    text-decoration: none;
+}
+
+.links > a:hover {
+    text-decoration: none;
+}
+
+
+
 .online, .offline {
     height: 8px;
     width: 8px;
@@ -47,4 +68,18 @@ h1.blue, h2.blue, h3.blue, h4.blue, h5.blue, h6.blue {
 
 .toasts .toast {
     min-width: 300px;
+}
+
+
+code pre {
+    display: block;
+    font-size: 1.3em;
+    color: #212529;
+    background-color: #eee;
+    padding: 2em;
+    border-radius: 3px;
+}
+
+table.table.no_border_top th {
+    border-top: none;
 }

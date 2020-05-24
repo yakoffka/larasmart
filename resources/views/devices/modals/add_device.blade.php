@@ -24,9 +24,10 @@ $id = 'add_device_' . $device->hid;
                     @csrf
                     <input type="hidden" name="hid" value="{{ $device->hid ?? '' }}">
                     <input type="hidden" name="number_relay" value="{{ $device->number_relay ?? '' }}">
-                    <input type="text" name="name" placeholder="enter device name" value="{{ old('name') ?? '' }}" required>
+                    <input type="text" name="name" placeholder="enter device name" required
+                           value="{{ old('name') ?? $device->name ?? '' }}">
                     <input type="text" name="description" placeholder="enter device description"
-                           value="{{ old('description') ?? '' }}">
+                           value="{{ old('description') ?? $device->description ?? '' }}">
                 </form>
             </div>
             <div class="modal-footer">

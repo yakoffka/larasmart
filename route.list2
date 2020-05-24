@@ -5,6 +5,7 @@
 |        | GET|HEAD  | api/user               |                  | Closure                                                                | api,auth:api |
 |        | POST      | devices                | devices.store    | App\Http\Controllers\DeviceController@store                            | web,auth     |
 |        | GET|HEAD  | devices                | devices.index    | App\Http\Controllers\DeviceController@index                            | web,auth     |
+|        | GET|HEAD  | devices/report         | devices.report   | App\Http\Controllers\DeviceController@report                           | web,auth     |
 |        | PUT|PATCH | devices/{device}       | devices.update   | App\Http\Controllers\DeviceController@update                           | web,auth     |
 |        | GET|HEAD  | devices/{device}       | devices.show     | App\Http\Controllers\DeviceController@show                             | web,auth     |
 |        | DELETE    | devices/{device}       | devices.destroy  | App\Http\Controllers\DeviceController@destroy                          | web,auth     |
@@ -12,8 +13,8 @@
 |        | POST      | login                  |                  | App\Http\Controllers\Auth\LoginController@login                        | web,guest    |
 |        | GET|HEAD  | login                  | login            | App\Http\Controllers\Auth\LoginController@showLoginForm                | web,guest    |
 |        | POST      | logout                 | logout           | App\Http\Controllers\Auth\LoginController@logout                       | web          |
-|        | GET|HEAD  | password/confirm       | password.confirm | App\Http\Controllers\Auth\ConfirmPasswordController@showConfirmForm    | web,auth     |
 |        | POST      | password/confirm       |                  | App\Http\Controllers\Auth\ConfirmPasswordController@confirm            | web,auth     |
+|        | GET|HEAD  | password/confirm       | password.confirm | App\Http\Controllers\Auth\ConfirmPasswordController@showConfirmForm    | web,auth     |
 |        | POST      | password/email         | password.email   | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web          |
 |        | GET|HEAD  | password/reset         | password.request | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web          |
 |        | POST      | password/reset         | password.update  | App\Http\Controllers\Auth\ResetPasswordController@reset                | web          |

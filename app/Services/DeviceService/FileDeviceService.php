@@ -16,7 +16,7 @@ class FileDeviceService extends DeviceServiceAbstract
      * @return string
      * @throws FileNotFoundException
      */
-    protected function getStatusDevices(): string
+    public function getStatusDevices(): string
     {
         if (Storage::disk('devices')->missing($this->pathToFile)) {
             Storage::disk('devices')->copy($this->pathToExample, $this->pathToFile);

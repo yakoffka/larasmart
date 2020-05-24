@@ -2,7 +2,7 @@
 
 $n ??= 1;
 $color ??= '00ccff';
-$error ??= 'something happened..';
+$message ??= 'something happened..';
 
 ?>
 
@@ -21,7 +21,7 @@ $error ??= 'something happened..';
             </button>
         </div>
         <div class="toast-body">
-            <?= $error ?>
+            <?= $message ?>
         </div>
     </div>
 </div>

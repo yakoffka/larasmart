@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Device;
 use App\Http\Requests\StoreDeviceRequest;
+use App\Relay;
 use App\Services\DeviceService\DeviceServiceAbstract;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 
 /**
@@ -48,28 +51,37 @@ class DeviceController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param StoreDeviceRequest $request
+     * @return RedirectResponse
      */
-    public function store(StoreDeviceRequest $request): void
+    public function store(StoreDeviceRequest $request): RedirectResponse
     {
-        Device::create($request->validated());
-        redirect()->route('devices.index');
+        if(Device::whereHid($request->validated()['hid'])->first()) {
+            session()->flash('warning', array_merge(session('warning') ?? [], ['this device already exists in the system']));
+            session()->flash('warning', array_merge(session('warning') ?? [], ['second message']));
+            session()->flash('warning', array_merge(session('warning') ?? [], ['third message']));
+        } else {
+            $device = Device::create($request->validated());
+            $this->createDeviceRelays($device);
+            session()->flash('success', array_merge(session('success') ?? [], ['this device has been successfully added to the system.']));
+        }
+
+        return redirect()->route('devices.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Device  $device
-     * @return \Illuminate\Http\Response
+     * @param Device $device
      */
     public function show(Device $device)
     {
-        //
+        return view('devices.show', compact('device'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Device  $device
+     * @param Device $device
      * @return \Illuminate\Http\Response
      */
     public function edit(Device $device)
@@ -81,7 +93,7 @@ class DeviceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Device  $device
+     * @param Device $device
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Device $device)
@@ -92,11 +104,36 @@ class DeviceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Device  $device
+     * @param Device $device
      * @return \Illuminate\Http\Response
      */
     public function destroy(Device $device)
     {
         //
+    }
+
+    /**
+     * @return View
+     */
+    public function report(): View
+    {
+        $report = $this->deviceService->getStatusDevices();
+        $datetime = date('Y.m.d H:m:s');
+        return view('devices.report', compact('report', 'datetime'));
+    }
+
+    /**
+     * @param $device
+     */
+    protected function createDeviceRelays($device): void
+    {
+        for ($i = 1; $i <= $device->number_relay; $i++) {
+            Relay::create([
+                'name' => $device->hid . '_' . $i,
+                'description' => 'description relay #' . $i,
+                'device_id' => $device->id,
+                'number' => $i,
+            ]);
+        }
     }
 }
