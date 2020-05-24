@@ -24,5 +24,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 //Route::get('/devices', 'DeviceController@index')->name('devices.index')->middleware(['auth']);
 //Route::post('/devices', 'DeviceController@store')->name('devices.store')->middleware(['auth']);
 
+Route::post('/devices/{device}/{relay}/toggle_on', 'DeviceController@toggleOn')->name('devices.relay.toggle_on')
+    ->middleware(['auth']);
+Route::post('/devices/{device}/{relay}/toggle_off', 'DeviceController@toggleOff')->name('devices.relay.toggle_off')
+    ->middleware(['auth']);
 Route::get('/devices/report', 'DeviceController@report')->name('devices.report')->middleware(['auth']);
 Route::resource('/devices', 'DeviceController')->except(['edit', 'create'])->middleware(['auth']);

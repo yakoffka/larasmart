@@ -41,6 +41,7 @@ class Relay extends Model
         'description',
         'device_id',
         'number',
+        'expected_status',
     ];
 
     /**

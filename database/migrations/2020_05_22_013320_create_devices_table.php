@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\DeviceService\FileDeviceService;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -32,5 +33,8 @@ class CreateDevicesTable extends Migration
     public function down(): void
     {
         Schema::dropIfExists('devices');
+        if ( Storage::disk('devices')->exists(FileDeviceService::$pathToFile)) {
+            Storage::disk('devices')->delete(FileDeviceService::$pathToFile);
+        }
     }
 }

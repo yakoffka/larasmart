@@ -9,8 +9,8 @@ Device Found
   Release:      100
   Interface:    0
   Number of Relays = 2
-EX001_1=0
-EX001_2=0
+EX001_1=1
+EX001_2=1
 Device Found
   type: 16c0 05df
   path: /dev/hidraw2
@@ -20,11 +20,11 @@ Device Found
   Release:      100
   Interface:    0
   Number of Relays = 8
-EX002_1=0
-EX002_2=0
+EX002_1=1
+EX002_2=1
 EX002_3=0
-EX002_4=0
-EX002_5=0
-EX002_6=0
-EX002_7=0
-EX002_8=0
+EX002_4=1
+EX002_5=1
+EX002_6=1
+EX002_7=1
+EX002_8=1

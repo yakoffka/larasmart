@@ -28,6 +28,12 @@
             <a class="navbar-brand" href="{{ url('/') }}">
                 {{ config('app.name', 'Laravel') }}
             </a>
+            <a class="navbar-brand" href="{{ route('devices.index') }}">Devices</a>
+            <a class="navbar-brand" href="#">History</a>
+            <a class="navbar-brand" href="{{ route('devices.report') }}">Report</a>
+            <a class="navbar-brand" href="#">Logs</a>
+            <a class="navbar-brand" href="https://github.com/yakoffka/larasmart" target="_blank">GitHub</a>
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="{{ __('Toggle navigation') }}">
@@ -87,7 +93,7 @@
 
 
     @auth
-        <div class="container">
+        {{--<div class="container">
             <div class="row justify-content-center">
                 <div class="flex-center position-ref full-height">
                     <div class="content">
@@ -101,7 +107,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--}}
     @endauth
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

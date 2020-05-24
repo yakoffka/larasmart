@@ -5,6 +5,7 @@ namespace App\Services\DeviceService;
 
 
 use App\Device;
+use App\Relay;
 use Illuminate\Support\Collection;
 
 abstract class DeviceServiceAbstract
@@ -13,6 +14,13 @@ abstract class DeviceServiceAbstract
      * @return string
      */
     abstract public function getStatusDevices(): string;
+
+    /**
+     * @param Device $device
+     * @param Relay $relay
+     * @param string $status
+     */
+    abstract public function setStatusRelay(Device $device, Relay $relay, string $status = '1'): void;
 
     /**
      * @return Collection
@@ -76,7 +84,7 @@ abstract class DeviceServiceAbstract
         return $statusesRelaysByHid ?? [];
     }
 
-    /**
+/**
      * @return array
      */
     public function getAllRelaysReport(): array

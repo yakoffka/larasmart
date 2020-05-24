@@ -39,7 +39,7 @@ class DeviceController extends Controller
         $onlineDevices = $this->deviceService->getOnlineDevices();
 
         $devices->each(static function (Device $item) use (&$onlineDevices) {
-            if($onlineDevices->contains('hid', $item->hid)) {
+            if ($onlineDevices->contains('hid', $item->hid)) {
                 $item->online_status = true;
                 $onlineDevices = $onlineDevices->filter(fn($device) => $device->hid !== $item->hid);
             }
@@ -55,7 +55,7 @@ class DeviceController extends Controller
      */
     public function store(StoreDeviceRequest $request): RedirectResponse
     {
-        if(Device::whereHid($request->validated()['hid'])->first()) {
+        if (Device::whereHid($request->validated()['hid'])->first()) {
             session()->flash('warning', array_merge(session('warning') ?? [], ['this device already exists in the system']));
         } else {
             $device = Device::create($request->validated());
@@ -90,7 +90,7 @@ class DeviceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @param Device $device
      * @return \Illuminate\Http\Response
      */
@@ -135,5 +135,27 @@ class DeviceController extends Controller
                 'expected_status' => $statusesRelays[$i],
             ]);
         }
+    }
+
+    /**
+     * @param Device $device
+     * @param Relay $relay
+     * @return RedirectResponse
+     */
+    public function toggleOn(Device $device, Relay $relay): RedirectResponse
+    {
+        $this->deviceService->setStatusRelay($device, $relay, '1');
+        return redirect()->route('devices.show', $device);
+    }
+
+    /**
+     * @param Device $device
+     * @param Relay $relay
+     * @return RedirectResponse
+     */
+    public function toggleOff(Device $device, Relay $relay): RedirectResponse
+    {
+        $this->deviceService->setStatusRelay($device, $relay, '0');
+        return redirect()->route('devices.show', $device);
     }
 }
