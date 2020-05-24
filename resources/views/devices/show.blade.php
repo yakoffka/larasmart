@@ -9,6 +9,16 @@
 
                 @if($device->relays->count() > 0)
                     <ul>
+                        <tr>
+                            <th>num</th>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>device hid</th>
+                            <th>description</th>
+                            <th>last status</th>
+                            <th>actions</th>
+                        </tr>
+
                         @foreach($device->relays as $relay)
                             <li>{{ $relay->name }}</li>
                         @endforeach
