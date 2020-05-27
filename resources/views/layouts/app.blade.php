@@ -91,32 +91,38 @@
 
     </main>
 
-
-    @auth
-        {{--<div class="container">
-            <div class="row justify-content-center">
-                <div class="flex-center position-ref full-height">
-                    <div class="content">
-                        <div class="links">
-                            <a href="{{ route('devices.index') }}">Devices</a>
-                            <a href="#">History</a>
-                            <a href="{{ route('devices.report') }}">Report</a>
-                            <a href="#">Logs</a>
-                            <a href="https://github.com/yakoffka/larasmart" target="_blank">GitHub</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>--}}
-    @endauth
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
-    <!--Инициализация всплывающих сообщений через JavaScript-->
+    {{--Инициализация всплывающих сообщений через JavaScript--}}
     <script>
         $('.toast').toast('show');
+    </script>
+
+    {{-- Automatic reloading of the page to prevent csrf-token decay --}}
+    {{-- src: https://stackoverflow.com/a/4029518/12347130 --}}
+    <script type="text/javascript">
+        var idleTime = 0;
+        $(document).ready(function () {
+            //Increment the idle time counter every minute.
+            var idleInterval = setInterval(timerIncrement, 60000); // 60000 = 1 minute
+
+            //Zero the idle timer on mouse movement.
+            $(this).mousemove(function (e) {
+                idleTime = 0;
+            });
+            $(this).keypress(function (e) {
+                idleTime = 0;
+            });
+        });
+
+        function timerIncrement() {
+            idleTime = idleTime + 1;
+            if (idleTime > 20) { // 20 minutes
+                window.location.reload();
+            }
+        }
     </script>
 </div>
 
