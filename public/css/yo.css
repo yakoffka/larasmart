@@ -2,6 +2,10 @@ a {
     outline: none;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 a .blue {
     color: #1d68a7;
 }
@@ -85,8 +89,6 @@ table.table.no_border_top th {
 }
 
 
-
-
 /* switch */
 .switch label {
     cursor: pointer
@@ -158,4 +160,5 @@ table.table.no_border_top th {
     transition: left 0.3s ease, background 0.3s ease, box-shadow 1s ease;
     transition: left 0.3s ease, background 0.3s ease, box-shadow 1s ease, -webkit-box-shadow 1s ease
 }
+
 /* /switch */

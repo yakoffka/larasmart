@@ -25,7 +25,7 @@ $id = 'add_device_' . $device->hid;
                     <input type="hidden" name="hid" value="{{ $device->hid ?? '' }}">
                     <input type="hidden" name="number_relay" value="{{ $device->number_relay ?? '' }}">
                     <input type="text" name="name" placeholder="enter device name" required
-                           value="{{ old('name') ?? $device->name ?? '' }}">
+                           value="{{ old('name') ?? $device->name ??  $device->hid }}">
                     <input type="text" name="description" placeholder="enter device description"
                            value="{{ old('description') ?? $device->description ?? '' }}">
                 </form>

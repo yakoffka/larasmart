@@ -5,7 +5,6 @@ namespace App;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
@@ -17,7 +16,7 @@ use Illuminate\Support\Carbon;
  * @property string $description
  * @property string $hid
  * @property int $number_relay
- * @property int $online_status
+ * @property string $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -44,7 +43,10 @@ class Device extends Model
         'hid',
         'number_relay',
         'description',
+        'status',
     ];
+
+    public string $status = 'offline';
 
     /**
      * Get the relay of this device

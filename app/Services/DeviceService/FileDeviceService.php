@@ -18,7 +18,7 @@ class FileDeviceService extends DeviceServiceAbstract
      * @return string
      * @throws FileNotFoundException
      */
-    public function getStatusDevices(): string
+    public function getResponseFromDevices(): string
     {
         if (Storage::disk('devices')->missing(self::$pathToFile)) {
             Storage::disk('devices')->copy($this->pathToExample, self::$pathToFile);
@@ -28,20 +28,20 @@ class FileDeviceService extends DeviceServiceAbstract
 
 
     /**
-     * @param Device $device
      * @param Relay $relay
-     * @param string $status
+     * @param bool $newStatus
      * @throws FileNotFoundException
      */
-    public function setStatusRelay(Device $device, Relay $relay, string $status = '1'): void
+    /*public function setStatusRelay(Relay $relay, bool $newStatus): void
     {
         $statusDevices = $this->getStatusDevices();
-        $expectedStatus = $status === '1' ? '0' : '1';
+        dd($statusDevices);
+        $expectedStatus = $newStatus === '1' ? '0' : '1';
 
         $toggle = false;
         foreach ($strings = explode(PHP_EOL, $statusDevices) as $key => $string) {
             if ($string === $device->hid . '_' . $relay->number . '=' . $expectedStatus) {
-                $strings[$key] = $device->hid . '_' . $relay->number . '=' . $status;
+                $strings[$key] = $device->hid . '_' . $relay->number . '=' . $newStatus;
                 $toggle = true;
             }
         }
@@ -49,16 +49,25 @@ class FileDeviceService extends DeviceServiceAbstract
         if ($toggle) {
             if (Storage::disk('devices')->put(self::$pathToFile, implode(PHP_EOL, $strings))) {
                 session()->flash('success', array_merge(session('success') ?? [],
-                    ['device ' . $device->hid . '_' . $relay->number . ' is ' . ($status === '1' ? 'on' : 'off')]));
+                    ['device ' . $device->hid . '_' . $relay->number . ' is ' . ($newStatus === '1' ? 'on' : 'off')]));
             } else {
                 session()->flash('error', array_merge(session('error') ?? [],
-                    ['error device ' . $device->hid . '_' . $relay->number . ' is ' . ($status === '1' ? 'on' : 'off')]));
+                    ['error device ' . $device->hid . '_' . $relay->number . ' is ' . ($newStatus === '1' ? 'on' : 'off')]));
             }
         } else {
             session()->flash('warning', array_merge(session('warning') ?? [],
-                ['warning device ' . $device->hid . '_' . $relay->number . ' is ' . ($status === '1' ? 'on' : 'off')]));
+                ['warning device ' . $device->hid . '_' . $relay->number . ' is ' . ($newStatus === '1' ? 'on' : 'off')]));
         }
 
-        $relay->update(['expected_status' => $status]);
+        $relay->update(['status' => $newStatus]);
+    }*/
+
+    /**
+     * @param Relay $relay
+     * @param bool $newStatus
+     */
+    protected function toggle(Relay $relay, bool $newStatus): void
+    {
+        // TODO: Implement toggle() method.
     }
 }

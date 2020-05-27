@@ -16,7 +16,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $description
  * @property int $device_id
  * @property int $number
- * @property boolean $expected_status
+ * @property boolean $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -41,7 +41,7 @@ class Relay extends Model
         'description',
         'device_id',
         'number',
-        'expected_status',
+        'status',
     ];
 
     /**
@@ -50,5 +50,14 @@ class Relay extends Model
     public function device(): BelongsTo
     {
         return $this->belongsTo(Device::class);
+    }
+
+    /**
+     * @param boolean $expected
+     * @return bool
+     */
+    public function isStatus(bool $expected): bool
+    {
+        return $this->status === $expected;
     }
 }

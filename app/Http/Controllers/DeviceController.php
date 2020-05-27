@@ -6,7 +6,6 @@ use App\Device;
 use App\Http\Requests\StoreDeviceRequest;
 use App\Relay;
 use App\Services\DeviceService\DeviceServiceAbstract;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -37,8 +36,8 @@ class DeviceController extends Controller
     public function index()
     {
         $storedDevices = Device::with('relays')->get();
-        $onlineDevices = $this->deviceService->getOnlineDevices();
-        $devices = $this->mergeDevices($storedDevices, $onlineDevices);
+        $devices = $this->deviceService->getOnlineDevices();
+        // $devices = $this->mergeDevices($storedDevices, $onlineDevices);
 
         return view('devices.index', compact('devices'));
     }
@@ -113,7 +112,7 @@ class DeviceController extends Controller
      */
     public function report(): View
     {
-        $report = $this->deviceService->getStatusDevices();
+        $report = $this->deviceService->getResponseFromDevices();
         $datetime = date('Y.m.d H:m:s');
         return view('devices.report', compact('report', 'datetime'));
     }
@@ -130,31 +129,29 @@ class DeviceController extends Controller
                 'description' => 'description relay #' . $i,
                 'device_id' => $device->id,
                 'number' => $i,
-                'expected_status' => $statusesRelays[$i],
+                'status' => $statusesRelays[$i],
             ]);
         }
     }
 
     /**
-     * @param Device $device
      * @param Relay $relay
      * @return RedirectResponse
      */
-    public function toggleOn(Device $device, Relay $relay): RedirectResponse
+    public function toggleOn(Relay $relay): RedirectResponse
     {
-        $this->deviceService->setStatusRelay($device, $relay, '1');
-        return redirect()->route('devices.show', $device);
+        $this->deviceService->setStatusRelay($relay, true);
+        return redirect()->route('devices.show', $relay->device_id);
     }
 
     /**
-     * @param Device $device
      * @param Relay $relay
      * @return RedirectResponse
      */
-    public function toggleOff(Device $device, Relay $relay): RedirectResponse
+    public function toggleOff(Relay $relay): RedirectResponse
     {
-        $this->deviceService->setStatusRelay($device, $relay, '0');
-        return redirect()->route('devices.show', $device);
+        $this->deviceService->setStatusRelay($relay, false);
+        return redirect()->route('devices.show', $relay->device_id);
     }
 
     /**
@@ -162,25 +159,25 @@ class DeviceController extends Controller
      * @param Collection $onlineDevices
      * @return array
      */
-    protected function mergeDevices(Collection $storedDevices, Collection $onlineDevices): array
-    {
-        $deviceService = $this->deviceService;
-        $storedDevices->each(static function (Device $item) use (&$onlineDevices, $deviceService) {
-            if ($onlineDevices->contains('hid', $item->hid)) {
-
-                $actualRelaysStatuses = $deviceService->getStatusesRelaysByHid($item->hid);
-                foreach ($item->relays as $relay) {
-                    // @todo: replace '!=' => '!=='
-                    if ($actualRelaysStatuses[$relay->number] != $relay->expected_status) {
-                         session()->flash('error', [...session('error') ?? [], $relay->name . ' has unexpected state']);
-                        // @todo: добавить метод addToFlesh(){session()->flash('error', [...session('error') ?? [], 'new type']);}
-                    }
-                }
-
-                $item->online_status = true;
-                $onlineDevices = $onlineDevices->filter(fn($device) => $device->hid !== $item->hid);
-            }
-        });
-        return [...$storedDevices, ...$onlineDevices];
-    }
+//    protected function mergeDevices(Collection $storedDevices, Collection $onlineDevices): array
+//    {
+//        $deviceService = $this->deviceService;
+//        $storedDevices->each(static function (Device $item) use (&$onlineDevices, $deviceService) {
+//            if ($onlineDevices->contains('hid', $item->hid)) {
+//
+//                $actualRelaysStatuses = $deviceService->getStatusesRelaysByHid($item->hid);
+//                foreach ($item->relays as $relay) {
+//                    // @todo: replace '!=' => '!=='
+//                    if ($actualRelaysStatuses[$relay->number] != $relay->status) {
+//                         session()->flash('error', [...session('error') ?? [], $relay->name . ' has unexpected state']);
+//                        // @todo: добавить метод addToFlesh(){session()->flash('error', [...session('error') ?? [], 'new type']);}
+//                    }
+//                }
+//
+//                $item->online_status = true;
+//                $onlineDevices = $onlineDevices->filter(fn($device) => $device->hid !== $item->hid);
+//            }
+//        });
+//        return [...$storedDevices, ...$onlineDevices];
+//    }
 }
