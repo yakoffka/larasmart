@@ -20,14 +20,8 @@
                     @forelse($devices as $key => $device)
                         @include('devices.parts.row_device')
                     @empty
-                        <tr><td colspan="7">no saved devices</td></tr>
+                        <tr><td colspan="7">no devices</td></tr>
                     @endforelse
-                    @foreach($onlineDevices as $key => $device)
-                        @include('devices.parts.row_device')
-                    @endforeach
-                    @if(!$devices->count() && !$onlineDevices->count())
-                        <tr><td colspan="6">no devices</td></tr>
-                    @endif
                 </table>
 
             </div>

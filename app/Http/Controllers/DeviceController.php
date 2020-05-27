@@ -9,6 +9,7 @@ use App\Services\DeviceService\DeviceServiceAbstract;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 
@@ -35,17 +36,12 @@ class DeviceController extends Controller
      */
     public function index()
     {
-        $devices = Device::all();
+        $storedDevices = Device::all();
         $onlineDevices = $this->deviceService->getOnlineDevices();
+        $onlineDevices = $this->setStatus($storedDevices, $onlineDevices);
+        $devices = [...$storedDevices, ...$onlineDevices];
 
-        $devices->each(static function (Device $item) use (&$onlineDevices) {
-            if ($onlineDevices->contains('hid', $item->hid)) {
-                $item->online_status = true;
-                $onlineDevices = $onlineDevices->filter(fn($device) => $device->hid !== $item->hid);
-            }
-        });
-
-        return view('devices.index', compact('devices', 'onlineDevices'));
+        return view('devices.index', compact('devices'));
     }
 
     /**
@@ -157,5 +153,22 @@ class DeviceController extends Controller
     {
         $this->deviceService->setStatusRelay($device, $relay, '0');
         return redirect()->route('devices.show', $device);
+    }
+
+    /**
+    /**
+     * @param Collection $storedDevices
+     * @param Collection $onlineDevices
+     * @return Collection
+     */
+    protected function setStatus(Collection $storedDevices, Collection $onlineDevices): Collection
+    {
+        $storedDevices->each(static function (Device $item) use (&$onlineDevices) {
+            if ($onlineDevices->contains('hid', $item->hid)) {
+                $item->online_status = true;
+                $onlineDevices = $onlineDevices->filter(fn($device) => $device->hid !== $item->hid);
+            }
+        });
+        return $onlineDevices;
     }
 }
