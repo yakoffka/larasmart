@@ -11,6 +11,13 @@ use Illuminate\Support\Collection;
 abstract class DeviceServiceAbstract
 {
     /**
+     * contains relay states of all currently connected devices
+     *
+     * @var array
+     */
+    public array $relaysState;
+
+    /**
      * @return string
      */
     abstract public function getStatusDevices(): string;
@@ -19,6 +26,7 @@ abstract class DeviceServiceAbstract
      * @param Device $device
      * @param Relay $relay
      * @param string $status
+     * @todo: заменить string $status на boolean!
      */
     abstract public function setStatusRelay(Device $device, Relay $relay, string $status = '1'): void;
 
@@ -27,8 +35,7 @@ abstract class DeviceServiceAbstract
      */
     public function getOnlineDevices(): Collection
     {
-        $allRelaysReport = $this->getAllRelaysReport();
-        $devicesArray = $this->getDevicesArray($allRelaysReport);
+        $devicesArray = $this->getDevicesArray($this->getRelaysState());
         return $this->getNewDevices($devicesArray);
     }
 
@@ -75,24 +82,26 @@ abstract class DeviceServiceAbstract
      */
     public function getStatusesRelaysByHid(string $hid): array
     {
-        $allRelaysReport = $this->getAllRelaysReport();
         $pattern = '~^' . $hid . '_\d=[0|1]$~';
-        $hidRelaysReport = array_filter($allRelaysReport, fn(string $string) => preg_match($pattern, $string));
+        $hidRelaysReport = array_filter($this->getRelaysState(), fn(string $item) => preg_match($pattern, $item));
         foreach ($hidRelaysReport as $relayReport) {
-            $statusesRelaysByHid[$relayReport[6]] = $relayReport[8];
+            $statusesRelaysByHid[$relayReport[6]] = $relayReport[8] === '1';
         }
-        return $statusesRelaysByHid ?? [];
+       return $statusesRelaysByHid ?? [];
     }
 
-/**
+    /**
      * @return array
      */
-    public function getAllRelaysReport(): array
+    public function getRelaysState(): array
     {
-        $statusDevices = $this->getStatusDevices();
-        $strings = explode(PHP_EOL, $statusDevices);
-        $pattern = '~^[A-Z\d]{5}_\d=[0|1]$~';
-        $strings = array_filter($strings, fn(string $string) => preg_match($pattern, $string));
-        return $strings;
+        if (empty($this->relaysState)) {
+            $statusDevices = $this->getStatusDevices();
+            $strings = explode(PHP_EOL, $statusDevices);
+            $pattern = '~^[A-Z\d]{5}_\d=[0|1]$~';
+            $relaysState = array_filter($strings, fn(string $string) => preg_match($pattern, $string));
+            $this->relaysState = array_values($relaysState);
+        }
+        return $this->relaysState;
     }
 }
