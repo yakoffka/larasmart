@@ -49,12 +49,12 @@ class DeviceController extends Controller
     public function store(StoreDeviceRequest $request): RedirectResponse
     {
         if (Device::whereHid($request->validated()['hid'])->first()) {
-            session()->flash('warning', array_merge(session('warning') ?? [], ['this device already exists in the system']));
+            attachToFlash('warning', 'this device already exists in the system');
         } else {
             // @todo: add transaction?
             $device = Device::create($request->validated());
             $this->createDeviceRelays($device);
-            session()->flash('success', array_merge(session('success') ?? [], ['this device has been successfully added to the system.']));
+            attachToFlash('success', 'this device has been successfully added to the system.');
         }
 
         return redirect()->route('devices.index');

@@ -38,10 +38,10 @@ abstract class DeviceServiceAbstract
         if ($this->isConsistentStatus($relay)) {
             $this->toggle($relay, $newStatus);
             $relay->update(['status' => $newStatus]);
-            session()->flash('success', array_merge(session('success') ?? [], ['relay ' . $relay->name . ' is ' . ($newStatus === true ? 'on' : 'off')]));
+            attachToFlash('success', 'relay ' . $relay->name . ' is ' . ($newStatus === true ? 'on' : 'off'));
             return;
         }
-        session()->flash('warning', array_merge(session('warning') ?? [], ['relay ' . $relay->name . ' already is ' . ($newStatus === true ? 'on' : 'off')]));
+        attachToFlash('warning', 'relay ' . $relay->name . ' already is ' . ($newStatus === true ? 'on' : 'off'));
     }
 
     /**
