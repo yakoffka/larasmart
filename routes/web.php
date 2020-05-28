@@ -14,17 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('devices.index');
 });
 
 Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-//Route::get('/devices', 'DeviceController@index')->name('devices.index')->middleware(['auth']);
-//Route::post('/devices', 'DeviceController@store')->name('devices.store')->middleware(['auth']);
-
-Route::post('/relays/{relay}/toggle_on', 'DeviceController@toggleOn')->name('relays.toggle_on')->middleware(['auth']);
-Route::post('/relays/{relay}/toggle_off', 'DeviceController@toggleOff')->name('relays.toggle_off')->middleware(['auth']);
-Route::get('/devices/report', 'DeviceController@report')->name('devices.report')->middleware(['auth']);
-Route::resource('/devices', 'DeviceController')->except(['edit', 'create'])->middleware(['auth']);
+Route::post('/relays/{relay}/toggle_on', 'DeviceController@toggleOn')->name('relays.toggle_on');
+Route::post('/relays/{relay}/toggle_off', 'DeviceController@toggleOff')->name('relays.toggle_off');
+Route::get('/devices/report', 'DeviceController@report')->name('devices.report');
+Route::resource('/devices', 'DeviceController')->except(['edit', 'create']);

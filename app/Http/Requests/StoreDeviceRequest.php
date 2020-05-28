@@ -14,6 +14,7 @@ class StoreDeviceRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        // @todo: добавить проверку, или это уже слишком (есть в routes)
         return true;
     }
 

@@ -25,6 +25,7 @@ class DeviceController extends Controller
      */
     public function __construct(DeviceServiceAbstract $deviceService)
     {
+        parent::__construct();
         $this->deviceService = $deviceService;
     }
 
