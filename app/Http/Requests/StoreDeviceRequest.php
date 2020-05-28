@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreDeviceRequest extends FormRequest
 {
@@ -28,6 +29,9 @@ class StoreDeviceRequest extends FormRequest
             'hid' => 'required|string',
             'number_relay' => 'required|integer',
             'description' => 'nullable|string',
+            'status' => [
+                Rule::in(['online', 'suspended'])
+            ],
         ];
     }
 }

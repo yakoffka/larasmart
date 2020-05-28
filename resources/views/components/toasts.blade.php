@@ -14,7 +14,7 @@
     @if (session('error'))
         @foreach (session('error') as $key => $message)
             @php
-                $n = count(session('error')) - $key + 1;
+                $n = count(session('error')) - $key;
                 $color = 'a60d10';
             @endphp
 
@@ -25,7 +25,7 @@
     @if (session('warning'))
         @foreach (session('warning') as $key => $message)
             @php
-                $n = count(session('warning')) - $key + 1;
+                $n = count(session('warning')) - $key;
                 $color = 'ff8800';
             @endphp
 
@@ -36,7 +36,7 @@
     @if (session('success'))
         @foreach (session('success') as $key => $message)
             @php
-                $n = count(session('success')) - $key + 1;
+                $n = count(session('success')) - $key;
                 $color = '1d68a7';
             @endphp
 

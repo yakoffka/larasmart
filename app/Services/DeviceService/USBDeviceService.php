@@ -4,7 +4,6 @@
 namespace App\Services\DeviceService;
 
 
-use App\Device;
 use App\Relay;
 
 class USBDeviceService extends DeviceServiceAbstract
@@ -24,5 +23,14 @@ class USBDeviceService extends DeviceServiceAbstract
     public function setStatusRelay(Relay $relay, bool $newStatus): void
     {
         // TODO: Implement setStatusRelayDevice() method.
+    }
+
+    /**
+     * @param Relay $relay
+     * @param bool $newStatus
+     */
+    protected function toggle(Relay $relay, bool $newStatus): void
+    {
+        // TODO: Implement toggle() method.
     }
 }

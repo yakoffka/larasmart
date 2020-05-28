@@ -16,9 +16,17 @@ abstract class DeviceServiceAbstract
     public Collection $activeRelays;
 
     /**
+     * Receiving a response string from devices. For example, the output of the command "usbrelay"
+     *
      * @return string
      */
     abstract public function getResponseFromDevices(): string;
+
+    /**
+     * @param Relay $relay
+     * @param bool $newStatus
+     */
+    abstract protected function toggle(Relay $relay, bool $newStatus): void;
 
     /**
      * @param Relay $relay
@@ -30,80 +38,35 @@ abstract class DeviceServiceAbstract
         if ($this->isConsistentStatus($relay)) {
             $this->toggle($relay, $newStatus);
             $relay->update(['status' => $newStatus]);
-            session()->flash('success', array_merge(session('success') ?? [], ['relay ' . $relay->name . ' is ' . ($newStatus === '1' ? 'on' : 'off')]));
+            session()->flash('success', array_merge(session('success') ?? [], ['relay ' . $relay->name . ' is ' . ($newStatus === true ? 'on' : 'off')]));
+            return;
         }
-        session()->flash('warning', array_merge(session('warning') ?? [], ['relay ' . $relay->name . ' already is ' . ($newStatus === '1' ? 'on' : 'off')]));
+        session()->flash('warning', array_merge(session('warning') ?? [], ['relay ' . $relay->name . ' already is ' . ($newStatus === true ? 'on' : 'off')]));
     }
-
-    abstract protected function toggle(Relay $relay, bool $newStatus): void;
 
     /**
      * @return Collection
      */
     public function getOnlineDevices(): Collection
     {
-        $this->getActiveRelays();
-        // dd(__LINE__, $relaysState);
-        // $devicesArray = $this->getDevicesArray($relaysState);
-        // return $this->getNewDevices($devicesArray);
+        $this->setActiveRelays();
         return $this->getActiveDevices();
     }
 
     /**
-     * @param array $strings
-     * @return mixed
-     */
-//    protected function getDevicesArray(array $strings)
-//    {
-//        array_map(static function (string $key, string $val) use (&$devicesArray) {
-//            $devicesArray[substr($key, 0, 5)][substr($key, 0, 7)] = $val === '1';
-//        }, array_keys($strings), $strings);
-//        return $devicesArray;
-//    }
-
-    /**
-     * @param $devicesArray
+     * @param int $device_id
      * @return Collection
      */
-//    private function getNewDevices($devicesArray): Collection
-//    {
-//        $devices = collect([]);
-//
-//        foreach ($devicesArray as $hid => $item) {
-//            $device = new Device();
-//            $device->hid = $hid;
-//            $device->number_relay = count($item);
-//            $device->online_status = true;
-//
-//            $devices->push($device);
-//        }
-//        return $devices;
-//    }
-
-    /**
-     * Gets an array of states of all device relays with the transmitted identifier: num => status
-     * $statusesRelaysByHid = [
-     *      1 = "0",
-     *      2 = "1",
-     *  ];
-     *
-     * @param string $hid
-     * @return array
-     */
-    public function getStatusesRelaysByHid(string $hid): array
+    public function getStatusesRelaysByDeviceID(int $device_id): Collection
     {
-        $pattern = '~^' . $hid . '_\d=[0|1]$~';
-        $hidRelaysReport = array_filter($this->getActiveRelays(), fn(string $item) => preg_match($pattern, $item));
-        foreach ($hidRelaysReport as $relayReport) {
-            $statusesRelaysByHid[$relayReport[6]] = $relayReport[8] === '1';
-        }
-        return $statusesRelaysByHid ?? [];
+        $this->setActiveRelays();
+        return $this->activeRelays->filter(fn(Relay $relay) => $relay->device_id === $device_id);
     }
 
     /**
-     *
+     * Set to $activeRelays property a collection of all active relays from the response from devices
      */
-    public function getActiveRelays(): void
+    public function setActiveRelays(): void
     {
         if (empty($this->activeRelays)) {
             $relaysStrings = $this->getRelaysStrings($this->getResponseFromDevices());
@@ -120,6 +83,28 @@ abstract class DeviceServiceAbstract
     }
 
     /**
+     * @param string $responseFromDevices
+     * @return false|string[]
+     */
+    protected function getRelaysStrings(string $responseFromDevices)
+    {
+        $strings = explode(PHP_EOL, $responseFromDevices);
+        $pattern = '~^[A-Z\d]{5}_\d=[0|1]$~';
+        return array_filter($strings, fn(string $string) => preg_match($pattern, $string));
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getActiveRelays(): Collection
+    {
+        if (empty($this->activeRelays)) {
+            $this->setActiveRelays();
+        }
+        return $this->activeRelays;
+    }
+
+    /**
      * @return Collection
      */
     private function getActiveDevices(): Collection
@@ -131,29 +116,22 @@ abstract class DeviceServiceAbstract
             ], [
                 'status' => 'online',
                 'description' => 'example description',
-           ]);
+                'number_relay' => ($devices[$hid]['number_relay'] ?? 0) + 1,
+            ]);
         }
         return collect(array_values($devices ?? []));
     }
 
     /**
-     * @param Relay $relay
+     * @param Relay $relayFromDB
      * @return bool
      */
-    private function isConsistentStatus(Relay $relay): bool
+    private function isConsistentStatus(Relay $relayFromDB): bool
     {
-        dd(__LINE__);
-    }
+        $this->setActiveRelays();
+        $activeStatus = $this->activeRelays->where('name', $relayFromDB->name)->first()->status;
+        $savedStatus = $relayFromDB->status;
 
-    /**
-     * @param string $responseFromDevices
-     * @return false|string[]
-     */
-    protected function getRelaysStrings(string $responseFromDevices)
-    {
-        $strings = explode(PHP_EOL, $responseFromDevices);
-        $pattern = '~^[A-Z\d]{5}_\d=[0|1]$~';
-        $needleStrings = array_filter($strings, fn(string $string) => preg_match($pattern, $string));
-        return $needleStrings;
+        return $activeStatus === $savedStatus;
     }
 }

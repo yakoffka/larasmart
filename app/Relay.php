@@ -52,12 +52,4 @@ class Relay extends Model
         return $this->belongsTo(Device::class);
     }
 
-    /**
-     * @param boolean $expected
-     * @return bool
-     */
-    public function isStatus(bool $expected): bool
-    {
-        return $this->status === $expected;
-    }
 }
