@@ -28,9 +28,22 @@ class FileDeviceService extends DeviceServiceAbstract
     /**
      * @param Relay $relay
      * @param bool $newStatus
+     * @throws FileNotFoundException
      */
     protected function toggle(Relay $relay, bool $newStatus): void
     {
-        // TODO: Implement toggle() method.
+        $search = sprintf('%s_%d=%b', $relay->device->name, $relay->number, !$newStatus);
+        $replace = sprintf('%s_%d=%b', $relay->device->name, $relay->number, $newStatus);
+
+        $replacedResponse = str_replace($search, $replace, $this->getResponseFromDevices(), $count);
+
+        $action = $newStatus === true ? 'toggle on' : 'toggle off';
+        if( $count > 0 ) {
+            if(!Storage::disk('devices')->put(self::$pathToFile, $replacedResponse)) {
+                attachToFlash('error', "fail of $action of the relay $relay->name");
+            }
+        } else {
+            attachToFlash('error', "when $action the relay $relay->name is lost");
+        }
     }
 }

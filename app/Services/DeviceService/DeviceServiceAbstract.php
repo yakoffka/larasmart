@@ -35,13 +35,17 @@ abstract class DeviceServiceAbstract
      */
     public function setStatusRelay(Relay $relay, bool $newStatus): void
     {
+        $action = $newStatus === true ? 'toggle on' : 'toggle off';
+
         if ($this->isConsistentStatus($relay)) {
             $this->toggle($relay, $newStatus);
-            $relay->update(['status' => $newStatus]);
-            attachToFlash('success', 'relay ' . $relay->name . ' is ' . ($newStatus === true ? 'on' : 'off'));
+            if(!$relay->update(['status' => $newStatus])) {
+                 attachToFlash('error', "failure to write to database: $action relay $relay->name");
+            }
+            attachToFlash('success', "relay $relay->name is $action");
             return;
         }
-        attachToFlash('warning', 'relay ' . $relay->name . ' already is ' . ($newStatus === true ? 'on' : 'off'));
+        attachToFlash('warning', "relay $relay->name already is $action");
     }
 
     /**
